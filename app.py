@@ -49,7 +49,7 @@ tars_firebase = pyrebase.initialize_app(tars_firebase_config)
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    return redirect("https://solarillionfoundation.org/projects/Hyouka")
 
 @app.route("/python", methods=["POST"])
 def python():
