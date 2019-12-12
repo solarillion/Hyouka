@@ -146,7 +146,7 @@ def python_tester(payload):
         eval[4] = plot_raw_test()
         eval[5] = plot_coloured_test()
         eval[6] = random_numbers_test()
-        if 0 not in eval:
+        if all([0, -1]) not in eval:
             db.child(id).update({"progress": "py2v"})
             tars.chat_postMessage(channel=chat, text="You have almost completed Module 2. Get your plots verified by a TA, and then move on to Module 3. Great job!")
             message = name + " has completed Py2, verify and update progress with TARS."
