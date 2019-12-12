@@ -6,7 +6,7 @@ from contextlib import redirect_stdout
 import threading
 import hmac
 from hashlib import sha1
-from flask import Flask, jsonify, render_template, request, abort
+from flask import Flask, jsonify, redirect, request, abort
 import pyrebase
 import slack
 
