@@ -115,14 +115,16 @@ def python_tester(payload):
         else:
             check = np.where(np.array(eval) == 0)[0]
             if len(check) != 6:
-                tars.chat_postMessage(channel=chat, text="You did these right:")
-                for i in range(len(eval)):
-                    if eval[i] == 1:
-                        tars.chat_postMessage(channel=chat, text=functions[i])
+                if 1 in eval:
+                    tars.chat_postMessage(channel=chat, text="You did these right:")
+                    for i in range(len(eval)):
+                        if eval[i] == 1:
+                            tars.chat_postMessage(channel=chat, text=functions[i])
             if len(check) > 0:
-                tars.chat_postMessage(channel=chat, text="Oops! Please check these functions and try submitting again:")
-                for value in check:
-                    tars.chat_postMessage(channel=chat, text=functions[value])
+                if 0 in eval:
+                    tars.chat_postMessage(channel=chat, text="Oops! Please check these functions and try submitting again:")
+                    for value in check:
+                        tars.chat_postMessage(channel=chat, text=functions[value])
             tars.chat_postMessage(channel=chat, text="Do contact a TA if you have any doubts!")
     elif status == "py2":
         eval = [0, 0, 0, 0, 0, 0, 0]
@@ -154,14 +156,16 @@ def python_tester(payload):
         else:
             check = np.where(np.array(eval) == 0)[0]
             if len(check) != 7:
-                tars.chat_postMessage(channel=chat, text="You did these right:")
-                for i in range(len(eval)):
-                    if eval[i] == 1:
-                        tars.chat_postMessage(channel=chat, text=functions[i])
+                if 1 in eval:
+                    tars.chat_postMessage(channel=chat, text="You did these right:")
+                    for i in range(len(eval)):
+                        if eval[i] == 1:
+                            tars.chat_postMessage(channel=chat, text=functions[i])
             if len(check) > 0:
-                tars.chat_postMessage(channel=chat, text="Oops! Please check these functions and try submitting again:")
-                for value in check:
-                    tars.chat_postMessage(channel=chat, text=functions[value])
+                if 0 in eval:
+                    tars.chat_postMessage(channel=chat, text="Oops! Please check these functions and try submitting again:")
+                    for value in check:
+                        tars.chat_postMessage(channel=chat, text=functions[value])
             tars.chat_postMessage(channel=chat, text="Do contact a TA if you have any doubts!")
     elif status == "py3":
         eval = [0, 0, 0]
@@ -185,14 +189,16 @@ def python_tester(payload):
         else:
             check = np.where(np.array(eval) == 0)[0]
             if len(check) != 3:
-                tars.chat_postMessage(channel=chat, text="You did these right:")
-                for i in range(len(eval)):
-                    if eval[i] == 1:
-                        tars.chat_postMessage(channel=chat, text=functions[i])
+                if 1 in eval:
+                    tars.chat_postMessage(channel=chat, text="You did these right:")
+                    for i in range(len(eval)):
+                        if eval[i] == 1:
+                            tars.chat_postMessage(channel=chat, text=functions[i])
             if len(check) > 0:
-                tars.chat_postMessage(channel=chat, text="Oops! Please check these functions and try submitting again:")
-                for value in check:
-                    tars.chat_postMessage(channel=chat, text=functions[value])
+                if 0 in eval:
+                    tars.chat_postMessage(channel=chat, text="Oops! Please check these functions and try submitting again:")
+                    for value in check:
+                        tars.chat_postMessage(channel=chat, text=functions[value])
             tars.chat_postMessage(channel=chat, text="Do contact a TA if you have any doubts!")
 
 if __name__ == "__main__":
