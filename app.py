@@ -38,6 +38,7 @@ hyouka_firebase_config = {
   "storageBucket": os.environ.get("HYOUKA_FB_SB")
 }
 firebase = pyrebase.initialize_app(hyouka_firebase_config)
+key_fb_hyouka = os.environ.get("KEY_FB_HYOUKA")
 
 tars_firebase_config = {
   "apiKey": os.environ.get("TARS_FIREBASE_KEY"),
@@ -46,6 +47,7 @@ tars_firebase_config = {
   "storageBucket": os.environ.get("TARS_FB_SB")
 }
 tars_firebase = pyrebase.initialize_app(tars_firebase_config)
+key_fb_tars = os.environ.get("KEY_FB_TARS")
 
 @app.route("/", methods=["GET"])
 def index():
@@ -67,7 +69,7 @@ def python():
     if "Delete" in message:
         db = firebase.database()
         github = payload["repository"]["owner"]["login"]
-        slack_id = db.child(github).child("slack").get().val()
+        slack_id = db.child(key_fb_hyouka).child(github).child("slack").get().val()
         chat = tars.im_open(user=slack_id).data["channel"]["id"]
         tars.chat_postMessage(channel=chat, text="You deleted " + message.split()[1])
         return "OK", 200
@@ -77,7 +79,7 @@ def python():
 
 def python_tester(payload):
     db = firebase.database()
-    data = db.get().val()
+    data = db.child(key_fb_hyouka).get().val()
     repo = payload["repository"]["full_name"]
     id = payload["repository"]["owner"]["login"]
     name = data[id]["name"]
@@ -107,11 +109,11 @@ def python_tester(payload):
         eval[5] = perfect_squares_test()
         if sum(eval) == 6:
             tars.chat_postMessage(channel=chat, text="Congrats! You have completed Module 1. You can now move on to Module 2. Impressive!")
-            db.child(id).update({"progress": "py2"})
+            db.child(key_fb_hyouka).child(id).update({"progress": "py2"})
             message = name + " has completed Py1."
             tars.chat_postMessage(channel=tars_admin, text=message)
             tars_db = tars_firebase.database()
-            tars_db.child("orientee").child(slack_id).update({"progress": "py2"})
+            tars_db.child(key_fb_tars).child("orientee").child(slack_id).update({"progress": "py2"})
         else:
             check = np.where(np.array(eval) == 0)[0]
             if len(check) != 6:
@@ -149,7 +151,7 @@ def python_tester(payload):
         eval[5] = plot_coloured_test()
         eval[6] = random_numbers_test()
         if sum(eval) == 7:
-            db.child(id).update({"progress": "py2v"})
+            db.child(key_fb_hyouka).child(id).update({"progress": "py2v"})
             tars.chat_postMessage(channel=chat, text="You have almost completed Module 2. Get your plots verified by a TA, and then move on to Module 3. Great job!")
             message = name + " has completed Py2, verify and update progress with TARS."
             tars.chat_postMessage(channel=tars_admin, text=message)
@@ -182,7 +184,7 @@ def python_tester(payload):
         eval[1] = compute_cost_test()
         eval[2] = simulate_restaurant_test()
         if sum(eval) == 3:
-            db.child(id).update({"progress": "py3v"})
+            db.child(key_fb_hyouka).child(id).update({"progress": "py3v"})
             tars.chat_postMessage(channel=chat, text="You're almost done with Module 3. Get your plots and simulate_restaurant function verified by a TA, and then move on to the " + group + " Assignments. Terrific work!")
             message = name + " has completed Py3, verify and update progress with TARS."
             tars.chat_postMessage(channel=tars_admin, text=message)
