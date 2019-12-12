@@ -105,7 +105,7 @@ def python_tester(payload):
         eval[3] = dictionary_lookup_test()
         eval[4] = round_off_test()
         eval[5] = perfect_squares_test()
-        if not any([0, -1]) in eval:
+        if sum(eval) == 6:
             tars.chat_postMessage(channel=chat, text="Congrats! You have completed Module 1. You can now move on to Module 2. Impressive!")
             db.child(id).update({"progress": "py2"})
             message = name + " has completed Py1."
@@ -146,7 +146,7 @@ def python_tester(payload):
         eval[4] = plot_raw_test()
         eval[5] = plot_coloured_test()
         eval[6] = random_numbers_test()
-        if not any([0, -1]) in eval:
+        if sum(eval) == 7:
             db.child(id).update({"progress": "py2v"})
             tars.chat_postMessage(channel=chat, text="You have almost completed Module 2. Get your plots verified by a TA, and then move on to Module 3. Great job!")
             message = name + " has completed Py2, verify and update progress with TARS."
@@ -177,7 +177,7 @@ def python_tester(payload):
         eval[0] = generate_order_test()
         eval[1] = compute_cost_test()
         eval[2] = simulate_restaurant_test()
-        if not any([0, -1]) in eval:
+        if sum(eval) == 3:
             db.child(id).update({"progress": "py3v"})
             tars.chat_postMessage(channel=chat, text="You're almost done with Module 3. Get your plots and simulate_restaurant function verified by a TA, and then move on to the " + group + " Assignments. Terrific work!")
             message = name + " has completed Py3, verify and update progress with TARS."
