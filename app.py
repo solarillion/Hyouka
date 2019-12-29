@@ -1,25 +1,15 @@
 # Authors: Nanda H Krishna (https://github.com/nandahkrishna), Abhijith Ragav (https://github.com/abhijithragav)
 
 import os
-import io
-from contextlib import redirect_stdout
+import json
 import threading
+import subprocess
 import hmac
 from hashlib import sha1
 from flask import Flask, jsonify, redirect, request, abort
+import numpy as np
 import pyrebase
 import slack
-
-import math
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import pickle as pkl
-
-from Py1Ans import *
-from Py2Ans import *
-from Py3Ans import *
 
 app = Flask(__name__)
 app.debug = True
@@ -88,7 +78,6 @@ def python_tester(payload):
     slack_id = data[id]["slack"]
     chat = tars.im_open(user=slack_id).data["channel"]["id"]
     if status == "py1":
-        eval = [0, 0, 0, 0, 0, 0]
         functions = {
             0: "number_pattern",
             1: "zero_star_pattern",
@@ -101,12 +90,9 @@ def python_tester(payload):
             os.system("curl -H 'Authorization: token " + github_token + "' -H 'Accept: application/vnd.github.v3.raw' -O -L https://api.github.com/repos/" + repo + "/contents/Module1.ipynb")
         except:
             return
-        eval[0] = number_pattern_test()
-        eval[1] = zero_star_pattern_test()
-        eval[2] = trigonometric_pattern_test()
-        eval[3] = dictionary_lookup_test()
-        eval[4] = round_off_test()
-        eval[5] = perfect_squares_test()
+        s = subprocess.run(["python", "Py1Test.py"], capture_output=True)
+        s = str(s.stdout.decode("utf-8")).split("\n")[-2]
+        eval = json.loads(s)
         if sum(eval) == 6:
             tars.chat_postMessage(channel=chat, text="Congrats! You have completed Module 1. You can now move on to Module 2. Impressive!")
             db.child(key_fb_hyouka).child(id).update({"progress": "py2"})
@@ -128,9 +114,8 @@ def python_tester(payload):
                     for value in check:
                         tars.chat_postMessage(channel=chat, text=functions[value])
             tars.chat_postMessage(channel=chat, text="Do contact a TA if you have any doubts!")
-        os.system("rm -rf Module1.ipynb")
+        os.system("rm -rf Module*")
     elif status == "py2":
-        eval = [0, 0, 0, 0, 0, 0, 0]
         functions = {
             0: "pickle_to_csv",
             1: "count_unique",
@@ -144,13 +129,9 @@ def python_tester(payload):
             os.system("curl -H 'Authorization: token " + github_token + "' -H 'Accept: application/vnd.github.v3.raw' -O -L https://api.github.com/repos/" + repo + "/contents/Module2.ipynb")
         except:
             return
-        eval[0] = pickle_to_csv_test()
-        eval[1] = count_unique_test()
-        eval[2] = add_binary_test()
-        eval[3] = compute_resp_test()
-        eval[4] = plot_raw_test()
-        eval[5] = plot_coloured_test()
-        eval[6] = random_numbers_test()
+        s = subprocess.run(["python", "Py1Test.py"], capture_output=True)
+        s = str(s.stdout.decode("utf-8")).split("\n")[-2]
+        eval = json.loads(s)
         if sum(eval) == 7:
             db.child(key_fb_hyouka).child(id).update({"progress": "py2v"})
             tars.chat_postMessage(channel=chat, text="You have almost completed Module 2. Get your plots verified by a TA, and then move on to Module 3. Great job!")
@@ -170,9 +151,8 @@ def python_tester(payload):
                     for value in check:
                         tars.chat_postMessage(channel=chat, text=functions[value])
             tars.chat_postMessage(channel=chat, text="Do contact a TA if you have any doubts!")
-        os.system("rm -rf Module2.ipynb")
+        os.system("rm -rf Module*")
     elif status == "py3":
-        eval = [0, 0, 0]
         functions = {
             0: "generate_order",
             1: "compute_cost",
@@ -182,9 +162,9 @@ def python_tester(payload):
             os.system("curl -H 'Authorization: token " + github_token + "' -H 'Accept: application/vnd.github.v3.raw' -O -L https://api.github.com/repos/" + repo + "/contents/Module3.ipynb")
         except:
             return
-        eval[0] = generate_order_test()
-        eval[1] = compute_cost_test()
-        eval[2] = simulate_restaurant_test()
+        s = subprocess.run(["python", "Py1Test.py"], capture_output=True)
+        s = str(s.stdout.decode("utf-8")).split("\n")[-2]
+        eval = json.loads(s)
         if sum(eval) == 3:
             db.child(key_fb_hyouka).child(id).update({"progress": "py3v"})
             tars.chat_postMessage(channel=chat, text="You're almost done with Module 3. Get your plots and simulate_restaurant function verified by a TA, and then move on to the " + group + " Assignments. Terrific work!")
@@ -204,9 +184,7 @@ def python_tester(payload):
                     for value in check:
                         tars.chat_postMessage(channel=chat, text=functions[value])
             tars.chat_postMessage(channel=chat, text="Do contact a TA if you have any doubts!")
-        os.system("rm -rf Module3.ipynb")
+        os.system("rm -rf Module*")
 
 if __name__ == "__main__":
     app.run(threaded=True)
-
-# Insert testing functions here
