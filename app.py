@@ -128,6 +128,7 @@ def python_tester(payload):
                     for value in check:
                         tars.chat_postMessage(channel=chat, text=functions[value])
             tars.chat_postMessage(channel=chat, text="Do contact a TA if you have any doubts!")
+        os.system("rm -rf Module1.ipynb")
     elif status == "py2":
         eval = [0, 0, 0, 0, 0, 0, 0]
         functions = {
@@ -169,6 +170,7 @@ def python_tester(payload):
                     for value in check:
                         tars.chat_postMessage(channel=chat, text=functions[value])
             tars.chat_postMessage(channel=chat, text="Do contact a TA if you have any doubts!")
+        os.system("rm -rf Module2.ipynb")
     elif status == "py3":
         eval = [0, 0, 0]
         functions = {
@@ -202,6 +204,7 @@ def python_tester(payload):
                     for value in check:
                         tars.chat_postMessage(channel=chat, text=functions[value])
             tars.chat_postMessage(channel=chat, text="Do contact a TA if you have any doubts!")
+        os.system("rm -rf Module3.ipynb")
 
 if __name__ == "__main__":
     app.run(threaded=True)
