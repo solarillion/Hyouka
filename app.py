@@ -58,7 +58,7 @@ def python():
     message = payload["head_commit"]["message"]
     if "Delete" in message:
         db = firebase.database()
-        github = payload["repository"]["owner"]["login"]
+        github = payload["repository"]["owner"]["login"].lower()
         slack_id = db.child(key_fb_hyouka).child(github).child("slack").get().val()
         chat = tars.im_open(user=slack_id).data["channel"]["id"]
         tars.chat_postMessage(channel=chat, text="You deleted " + message.split()[1])
@@ -71,7 +71,7 @@ def python_tester(payload):
     db = firebase.database()
     data = db.child(key_fb_hyouka).get().val()
     repo = payload["repository"]["full_name"]
-    id = payload["repository"]["owner"]["login"]
+    id = payload["repository"]["owner"]["login"].lower()
     name = data[id]["name"]
     status = data[id]["progress"]
     group = data[id]["group"]
@@ -94,12 +94,10 @@ def python_tester(payload):
         s = str(s.stdout.decode("utf-8")).split("\n")[-2]
         eval = json.loads(s)
         if sum(eval) == 6:
-            tars.chat_postMessage(channel=chat, text="Congrats! You have completed Module 1. You can now move on to Module 2. Impressive!")
-            db.child(key_fb_hyouka).child(id).update({"progress": "py2"})
+            tars.chat_postMessage(channel=chat, text="Congrats! You have completed Module 1. Ask a TA to verify your code, and move on to Module 2. Impressive!")
+            db.child(key_fb_hyouka).child(id).update({"progress": "py1v"})
             message = name + " has completed Py1."
             tars.chat_postMessage(channel=tars_admin, text=message)
-            tars_db = tars_firebase.database()
-            tars_db.child(key_fb_tars).child("orientee").child(slack_id).update({"progress": "py2"})
         else:
             check = np.where(np.array(eval) == 0)[0]
             if len(check) != 6:
@@ -129,7 +127,7 @@ def python_tester(payload):
             os.system("curl -H 'Authorization: token " + github_token + "' -H 'Accept: application/vnd.github.v3.raw' -O -L https://api.github.com/repos/" + repo + "/contents/Module2.ipynb")
         except:
             return
-        s = subprocess.run(["python", "Py1Test.py"], capture_output=True)
+        s = subprocess.run(["python", "Py2Test.py"], capture_output=True)
         s = str(s.stdout.decode("utf-8")).split("\n")[-2]
         eval = json.loads(s)
         if sum(eval) == 7:
@@ -162,7 +160,7 @@ def python_tester(payload):
             os.system("curl -H 'Authorization: token " + github_token + "' -H 'Accept: application/vnd.github.v3.raw' -O -L https://api.github.com/repos/" + repo + "/contents/Module3.ipynb")
         except:
             return
-        s = subprocess.run(["python", "Py1Test.py"], capture_output=True)
+        s = subprocess.run(["python", "Py3Test.py"], capture_output=True)
         s = str(s.stdout.decode("utf-8")).split("\n")[-2]
         eval = json.loads(s)
         if sum(eval) == 3:
